@@ -1,91 +1,412 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games Shop - A sua loja de games</title>
-        <link rel="stylesheet" href="./main.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Games Shop | Jogos, consoles e acessórios em Ipatinga</title>
+  <meta name="description"
+    content="Games Shop: jogos novos e seminovos, consoles e acessórios para PlayStation, Xbox e Nintendo em Ipatinga.">
+  <meta name="theme-color" content="#0b1b3b">
+  <meta property="og:title" content="Games Shop — Seu próximo jogo começa aqui">
+  <meta property="og:description" content="Jogos, consoles e acessórios para quem realmente gosta de jogar.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./main.css">
+  <script
+    type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"Games Shop","address":{"@type":"PostalAddress","streetAddress":"Rua Cromo, 157","addressLocality":"Ipatinga","addressRegion":"MG","addressCountry":"BR"}}</script>
 </head>
+
 <body>
-    <header>
-        <div class="container">
-            <h1>Games Shop</h1>
-            <nav>
-                <ul>
-                    <li><a href="#about">Sobre a loja</a></li>
-                    <li><a href="#contact">Contato</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <section id="about">
-        <div class="container">
-            <img class="store-front" src="./games_interna_jundiaishopping-01.webp" alt="Fachada da Loja Games Shop" 
-            width="600" height="500"/>
-            <div>
-                <h2>Sobre a Loja</h2>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ut sint suscipit error cumque eum sunt quisquam dicta dolorem? Suscipit inventore asperiores rerum delectus, atque debitis error neque magnam iusto.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel amet a soluta ipsum quaerat et porro, debitis minus adipisci repudiandae dolores doloribus dignissimos, modi voluptates cupiditate quia ex perspiciatis possimus.
-                </p>
-                <ul class="brands-list">
-                    <li><img src="./logo_nintendo_capa_widelg.jpg" alt="Nintendo"></li>
-                    <li><img src="./48de604b-99ee-4400-a600-6958a71f0959.jpg" alt="Xbox"></li>
-                    <li><img src="./images.png" alt="Playstation"></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <section id="contact">
-        <div class="container">
-            <h2>Contato</h2>
-                <div class="contact-methods">
-            <h3>Fale conosco</h3>
-        <form>
-                <input type="text" placeholder="Seu nome" required>
-                <input type="email" placeholder="Seu e-mail" required>
-                <input type="tel" placeholder="Seu Telefone" />
-                                <input type="submit" placeholder="Seu telefone (opcional)">
-            </form>
-        </div>
+  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+  <div class="announcement">Loja física em Ipatinga · Jogos novos e seminovos · Consulte disponibilidade</div>
+  <header class="site-header">
+    <div class="header-main shell">
+      <button id="menu-toggle" class="icon-button menu-button" aria-label="Abrir menu">☰</button>
+      <a class="logo" href="#inicio" aria-label="Games Shop, início"><span>GAMES</span><b>SHOP</b></a>
+      <div class="search" role="search"><span aria-hidden="true">⌕</span><input id="search-input" type="search"
+          placeholder="Busque jogos, consoles e acessórios..." aria-label="Buscar produtos" autocomplete="off">
+        <div id="search-suggestions" class="search-suggestions"></div>
+      </div>
+      <nav class="quick-actions" aria-label="Atalhos">
+        <button class="quick-link account" aria-label="Minha conta"><span>♙</span><small>Minha conta</small></button>
+        <button class="quick-link" data-open-favorites aria-label="Favoritos"><span>♡<i
+              data-fav-count>0</i></span><small>Favoritos</small></button>
+        <button class="quick-link" data-open-cart aria-label="Carrinho"><span>▱<i
+              data-cart-count>0</i></span><small>Carrinho</small></button>
+      </nav>
     </div>
-            <h3>Nos acompanhe</h3>
-            <ul class="Social-links">
-                <li>
-                    <a href="#" title="Siga-nos no instagram">
-                        <img src="#" alt="Logo do instagram">
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" title="Siga-nos no Facebook">
-                        <img src="#" alt="Logo do Facebook">
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" title="Visite nosso canal no Youtube">
-                        <img src="#" alt="Logo do Youtube">
-                    </a>
-                    </li>
-            </ul>
+    <nav id="mobile-menu" class="main-nav" aria-label="Principal">
+      <div class="shell"><a href="#inicio">Início</a><a href="#catalogo">Jogos</a><a href="#catalogo"
+          data-platform="PS5" class="ps">PlayStation</a><a href="#catalogo" data-platform="Xbox Series"
+          class="xb">Xbox</a><a href="#catalogo" data-platform="Nintendo Switch" class="nt">Nintendo</a><a
+          href="#consoles">Consoles</a><a href="#acessorios">Acessórios</a><a href="#seminovos">Seminovos</a><a
+          href="#ofertas">Ofertas</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div id="home-view">
+      <section id="inicio" class="hero">
+        <div class="shell hero-content">
+          <div class="hero-copy"><span class="hero-kicker">Loja física · Games novos e seminovos</span>
+            <p class="hero-brand">GAMES SHOP</p>
+            <h1>Seu próximo jogo começa aqui.</h1>
+            <p>Jogos, consoles e acessórios para quem realmente gosta de jogar.</p>
+            <div class="hero-actions"><a class="btn light" href="#catalogo">Ver jogos</a><a class="btn ghost"
+                href="#loja">Conhecer a loja</a></div>
+          </div>
+          <div class="hero-art">
+            <div class="game-case case-one"><img src="./assets/covers/resident-evil-requiem-optimized.jpg"
+                alt="Capa de Resident Evil Requiem"></div>
+            <div class="game-case case-two"><img src="./assets/covers/007-first-light.jpg"
+                alt="Capa de 007 First Light"></div>
+            <div class="controller" aria-hidden="true"><span class="dpad">✚</span><span class="buttons">● ●<br>●
+                ●</span></div>
+          </div>
         </div>
-        <div>
-            <h3>Venha até nós</h3>
-            <p>
-                Rua cromo n 157, Iguaçu - Ipatinga - MG
+        <div class="hero-stripe"></div>
+      </section>
+
+      <section class="platform-section shell">
+        <div class="section-heading compact">
+          <div><span class="eyebrow">Jogue do seu jeito</span>
+            <h2>Escolha sua plataforma</h2>
+          </div>
+        </div>
+        <div class="platform-grid"><a href="#catalogo" data-platform="PS5" class="platform-card playstation"><span>△ ○ ×
+              □</span><b>PlayStation</b><small>PS5 e PS4</small><i>→</i></a><a href="#catalogo"
+            data-platform="Xbox Series" class="platform-card xbox"><span>◉</span><b>Xbox</b><small>Series X|S e Xbox
+              One</small><i>→</i></a><a href="#catalogo" data-platform="Nintendo Switch"
+            class="platform-card nintendo"><span>◧</span><b>Nintendo</b><small>Switch e Switch 2</small><i>→</i></a><a
+            href="#acessorios" class="platform-card pc"><span>⌨</span><b>PC & Setup</b><small>Acessórios para jogar
+              melhor</small><i>→</i></a></div>
+      </section>
+
+      <section class="shop-section shell">
+        <div class="section-heading">
+          <div><span class="eyebrow">Os favoritos da comunidade</span>
+            <h2>Mais vendidos</h2>
+            <p>Sucessos atuais e jogos que continuam indispensáveis.</p>
+          </div><a href="#catalogo" class="text-link">Ver catálogo completo →</a>
+        </div>
+        <div id="best-sellers" class="product-grid"></div>
+      </section>
+      <section class="dark-section">
+        <div class="shell">
+          <div class="section-heading light-heading">
+            <div><span class="eyebrow">Chegaram por aqui</span>
+              <h2>Lançamentos</h2>
+              <p>Os títulos mais comentados para a sua coleção.</p>
+            </div><a href="#catalogo" class="text-link">Ver lançamentos →</a>
+          </div>
+          <div id="launches" class="product-row"></div>
+        </div>
+      </section>
+      <section class="shop-section shell">
+        <div class="section-heading">
+          <div><span class="eyebrow">Reserve sua próxima aventura</span>
+            <h2>Em breve</h2>
+            <p>Datas informadas pelas publishers. Disponibilidade física sob consulta.</p>
+          </div>
+        </div>
+        <div id="preorders" class="product-grid small-grid"></div>
+      </section>
+      <section id="ofertas" class="offer-section">
+        <div class="shell">
+          <div class="offer-head">
+            <div><span class="eyebrow">Preços demonstrativos</span>
+              <h2>Ofertas da semana</h2>
+            </div>
+            <p>Consulte a loja para confirmar preço e estoque antes de comprar.</p>
+          </div>
+          <div id="offers" class="product-grid"></div>
+        </div>
+      </section>
+
+      <section id="seminovos" class="used-section shell">
+        <div class="used-copy"><span class="eyebrow">Economize e continue jogando</span>
+          <h2>Jogos seminovos</h2>
+          <p>Jogos selecionados, testados e disponíveis para retirada na loja. Consulte o estado da mídia e da
+            embalagem.</p><a class="btn primary" href="#contato">Consultar estoque</a>
+        </div>
+        <div id="used-games" class="product-grid small-grid"></div>
+      </section>
+      <section class="trade-section">
+        <div class="shell trade-content"><span class="trade-icon">↔</span>
+          <div><span class="eyebrow">Troque, jogue, repita</span>
+            <h2>Seu jogo vale outro jogo</h2>
+            <p>Consulte a possibilidade de usar seus jogos como parte do pagamento. A avaliação é feita pela equipe da
+              loja.</p>
+          </div><button class="btn light" data-whatsapp="Olá! Gostaria de avaliar meus jogos usados.">Avaliar meus
+            jogos</button>
+        </div>
+      </section>
+
+      <section id="catalogo" class="catalog shell">
+        <div class="section-heading">
+          <div><span class="eyebrow">Catálogo</span>
+            <h2>Encontre seu próximo jogo</h2>
+          </div>
+        </div>
+        <div class="catalog-layout">
+          <aside class="filters">
+            <div class="filter-title"><b>Filtros</b><button id="clear-filters">Limpar</button></div>
+            <label>Plataforma<select id="filter-platform" data-filter="platform">
+                <option value="">Todas</option>
+                <option>PS5</option>
+                <option>Xbox Series</option>
+                <option>Nintendo Switch</option>
+                <option>Switch 2</option>
+              </select></label><label>Gênero<select data-filter="genre">
+                <option value="">Todos</option>
+                <option>Ação</option>
+                <option>Aventura</option>
+                <option>Corrida</option>
+                <option>Esportes</option>
+                <option>Família</option>
+                <option>Terror</option>
+              </select></label><label>Estado<select data-filter="condition">
+                <option value="">Novo e seminovo</option>
+                <option>Novo</option>
+                <option>Seminovo</option>
+              </select></label><label>Preço<select data-filter="price">
+                <option value="">Qualquer preço</option>
+                <option value="200">Até R$ 199,99</option>
+                <option value="350">R$ 200 a R$ 350</option>
+                <option value="351">Acima de R$ 350</option>
+              </select></label><label class="check"><input type="checkbox" data-filter="availability"> Somente em
+              estoque</label>
+          </aside>
+          <div class="catalog-results">
+            <div class="sort-row"><span id="result-count"></span><label>Ordenar por <select data-filter="sort">
+                  <option value="best">Mais vendidos</option>
+                  <option value="new">Lançamentos</option>
+                  <option value="low">Menor preço</option>
+                  <option value="high">Maior preço</option>
+                  <option value="az">A–Z</option>
+                </select></label></div>
+            <div id="catalog-grid" class="product-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="consoles" class="category-feature shell">
+        <div class="feature-media console-art"><span>PS5</span>
+          <div></div>
+        </div>
+        <div class="feature-copy"><span class="eyebrow">Nova geração</span>
+          <h2>Consoles para todo tipo de jogador</h2>
+          <p>PlayStation, Xbox e Nintendo. Consulte modelos, armazenamento, condição e disponibilidade diretamente com a
+            loja.</p>
+          <div class="category-pills"><span>PlayStation 5</span><span>Xbox Series</span><span>Nintendo Switch</span>
+          </div><a class="btn primary" href="#contato">Consultar consoles</a>
+        </div>
+      </section>
+      <section id="acessorios" class="accessories">
+        <div class="shell">
+          <div class="section-heading">
+            <div><span class="eyebrow">Controles, headsets e mais</span>
+              <h2>Complete seu setup</h2>
+            </div>
+          </div>
+          <div class="accessory-grid">
+            <article><span>🎮</span><b>Controles</b>
+              <p>Para todas as plataformas.</p>
+            </article>
+            <article><span>🎧</span><b>Headsets</b>
+              <p>Ouça cada detalhe da partida.</p>
+            </article>
+            <article><span>🔌</span><b>Cabos e carregadores</b>
+              <p>Seu setup sempre pronto.</p>
+            </article>
+            <article><span>💾</span><b>Armazenamento</b>
+              <p>Mais espaço para jogar.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="loja" class="store-section shell">
+        <div class="store-photo"><img src="./games_interna_jundiaishopping-01.webp"
+            alt="Interior real da Games Shop com jogos e acessórios expostos" loading="lazy"><span>Fotos real da
+            loja</span></div>
+        <div class="store-copy"><span class="eyebrow">Games de verdade, loja de verdade</span>
+          <h2>Conheça nossa loja</h2>
+          <p>Visite a Games Shop para ver jogos, consoles e acessórios de perto, conversar com a equipe e consultar as
+            novidades disponíveis.</p>
+          <address>Rua Cromo, 157<br>Iguaçu · Ipatinga — MG</address><a class="btn primary" href="#contato">Como falar
+            conosco</a>
+        </div>
+      </section>
+      <section id="sobre" class="about-section">
+        <div class="shell">
+          <div><span class="eyebrow">Sobre a Games Shop</span>
+            <h2>Mais do que uma loja.<br>Um ponto de encontro para quem gosta de games.</h2>
+          </div>
+          <div>
+            <p>A Games Shop é especializada em videogames, jogos e acessórios, reunindo lançamentos, grandes clássicos e
+              produtos para diferentes plataformas.</p>
+            <p>Nosso objetivo é oferecer uma experiência simples e próxima para quem procura seu próximo jogo, deseja
+              melhorar seu setup ou simplesmente gosta de conversar sobre videogames.</p>
+          </div>
+        </div>
+      </section>
+      <section class="benefits shell">
+        <article><span>🎮</span>
+          <div><b>Games novos e seminovos</b>
+            <p>Opções para diferentes bolsos e plataformas.</p>
+          </div>
+        </article>
+        <article><span>🏪</span>
+          <div><b>Loja física</b>
+            <p>Veja produtos e fale com a equipe de perto.</p>
+          </div>
+        </article>
+        <article><span>💬</span>
+          <div><b>Atendimento especializado</b>
+            <p>Ajuda para escolher seu próximo jogo.</p>
+          </div>
+        </article>
+        <article><span>📦</span>
+          <div><b>Grande variedade</b>
+            <p>Games, consoles e acessórios.</p>
+          </div>
+        </article>
+      </section>
+      <section class="social-section shell">
+        <div class="section-heading">
+          <div><span class="eyebrow">Nas redes e na loja</span>
+            <h2>Acompanhe a Games Shop</h2>
+            <p>Novidades, promoções e conteúdo para quem gosta de games.</p>
+          </div>
+          <div class="social-actions"><a class="btn primary" href="https://www.instagram.com/pedrinn_vs/"
+              target="_blank" rel="noopener noreferrer">Instagram</a><a class="btn secondary"
+              href="https://www.facebook.com/pedro.felipe.9256" target="_blank" rel="noopener noreferrer">Facebook</a>
+          </div>
+        </div>
+        <div class="social-grid">
+          <div class="social-placeholder">FOTOS<br>DA LOJA</div>
+          <div class="social-placeholder blue">NOVIDADES</div>
+          <div class="social-placeholder red">LANÇAMENTOS</div>
+          <div class="social-placeholder green">XBOX</div>
+          <div class="social-placeholder">SEMINOVOS</div>
+          <div class="social-placeholder red">NINTENDO</div>
+        </div>
+      </section>
+
+      <section class="faq shell">
+        <div><span class="eyebrow">Dúvidas frequentes</span>
+          <h2>FAQ</h2>
+          <p>Não encontrou o que procura? Fale diretamente com a loja.</p>
+        </div>
+        <div class="accordion">
+          <details>
+            <summary>Vocês trabalham com jogos seminovos?</summary>
+            <p>Sim. A disponibilidade varia conforme o estoque da loja.</p>
+          </details>
+          <details>
+            <summary>Posso trocar meus jogos usados?</summary>
+            <p>Você pode solicitar uma avaliação. O valor e a aceitação dependem do estado e da procura pelo título.</p>
+          </details>
+          <details>
+            <summary>Vocês vendem jogos para quais plataformas?</summary>
+            <p>Trabalhamos com jogos e produtos para plataformas PlayStation, Xbox e Nintendo. Consulte o estoque atual.
             </p>
+          </details>
+          <details>
+            <summary>É possível reservar um lançamento?</summary>
+            <p>Entre em contato para saber se a reserva está disponível para o título desejado.</p>
+          </details>
+          <details>
+            <summary>Posso consultar o estoque pelo WhatsApp?</summary>
+            <p>Sim. O botão do WhatsApp pode ser usado para consultar jogos, preços e disponibilidade.</p>
+          </details>
+          <details>
+            <summary>Vocês vendem consoles e acessórios?</summary>
+            <p>Sim. Consulte modelos, condições e disponibilidade diretamente com a equipe.</p>
+          </details>
         </div>
-    </section>
-    <footer>
-        <div class="container">
-            <p>a
-                &copy; Games Shop - Todos os direitos reservados - 2025
-            </p>
+      </section>
+      <section id="contato" class="contact-section">
+        <div class="shell">
+          <div class="contact-copy"><span class="eyebrow">Fale conosco</span>
+            <h2>Vamos encontrar seu próximo jogo.</h2>
+            <p>Envie sua dúvida ou visite nossa loja em Ipatinga.</p>
+            <address><b>Games Shop</b><br>Rua Cromo, 157 — Iguaçu<br>Ipatinga — MG</address>
+            <div class="contact-links"><a href="https://wa.me/5531997641538" target="_blank"
+                rel="noopener noreferrer"><span>◉</span><b>WhatsApp</b><small>(31) 99764-1538</small></a><a
+                href="https://www.instagram.com/pedrinn_vs/" target="_blank"
+                rel="noopener noreferrer"><span>◎</span><b>Instagram</b><small>@pedrinn_vs</small></a><a
+                href="https://www.facebook.com/pedro.felipe.9256" target="_blank"
+                rel="noopener noreferrer"><span>f</span><b>Facebook</b><small>Pedro Felipe</small></a></div>
+          </div>
+          <form id="contact-form"><label>Nome<input name="name" required
+                autocomplete="name"></label><label>Telefone<input name="phone" type="tel"
+                autocomplete="tel"></label><label>E-mail<input name="email" type="email" required
+                autocomplete="email"></label><label>Assunto<select name="subject">
+                <option>Consultar um jogo</option>
+                <option>Consoles e acessórios</option>
+                <option>Avaliar seminovos</option>
+                <option>Outro assunto</option>
+              </select></label><label>Mensagem<textarea name="message" rows="5" required></textarea></label><button
+              class="btn primary" type="submit">Enviar pelo WhatsApp</button></form>
         </div>
-    </footer>
+      </section>
+    </div>
+    <div id="product-view" class="product-page shell" hidden>
+      <div id="product-content"></div>
+    </div>
+    <div id="checkout-view" class="checkout-page" hidden>
+      <div id="checkout-content" class="shell"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="shell footer-grid">
+      <div><a class="logo footer-logo" href="#inicio"><span>GAMES</span><b>SHOP</b></a>
+        <p>Sua próxima aventura começa aqui.</p>
+      </div>
+      <div><b>Loja</b><a href="#catalogo">Jogos</a><a href="#consoles">Consoles</a><a
+          href="#acessorios">Acessórios</a><a href="#seminovos">Seminovos</a><a href="#ofertas">Ofertas</a></div>
+      <div><b>Atendimento</b><a href="#contato">Contato</a><a href="#contato">FAQ</a><button
+          data-whatsapp="Olá! Gostaria de falar com a Games Shop.">WhatsApp</button></div>
+      <div><b>Redes</b><a href="https://www.instagram.com/pedrinn_vs/" target="_blank"
+          rel="noopener noreferrer">Instagram</a><a href="https://www.facebook.com/pedro.felipe.9256" target="_blank"
+          rel="noopener noreferrer">Facebook</a><a href="#sobre">Sobre a loja</a></div>
+    </div>
+    <div class="shell footer-bottom"><span>© 2026 Games Shop — Todos os direitos reservados.</span><span>Ipatinga ·
+        Minas Gerais</span></div>
+  </footer>
+  <button class="floating-whatsapp" data-whatsapp="Olá! Gostaria de falar com a Games Shop."
+    aria-label="Fale com a Games Shop pelo WhatsApp"><span>◉</span><b>Fale com a Games Shop</b></button>
+  <div id="overlay" class="overlay"></div>
+  <aside id="cart-drawer" class="drawer" aria-hidden="true" aria-labelledby="cart-title">
+    <div class="drawer-head">
+      <div><span class="eyebrow">Seu pedido</span>
+        <h2 id="cart-title">Carrinho</h2>
+      </div><button data-close aria-label="Fechar carrinho">×</button>
+    </div>
+    <div id="cart-items" class="drawer-body"></div>
+    <div class="cart-summary">
+      <p><span>Subtotal</span><b id="cart-subtotal">R$ 0,00</b></p>
+      <p><span>Total</span><strong id="cart-total">R$ 0,00</strong></p><button id="checkout-button"
+        class="btn primary">Continuar</button><small>Checkout demonstrativo. Nenhuma cobrança será realizada.</small>
+    </div>
+  </aside>
+  <aside id="favorites-drawer" class="drawer favorites-drawer" aria-hidden="true" aria-labelledby="favorites-title">
+    <div class="drawer-head">
+      <div><span class="eyebrow">Sua lista</span>
+        <h2 id="favorites-title">Meus favoritos</h2>
+      </div><button data-close aria-label="Fechar favoritos">×</button>
+    </div>
+    <div id="favorites-grid" class="drawer-body product-grid"></div>
+  </aside>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js"></script>
 </body>
+
 </html>
