@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pedrosantosv23/Gameshop.git"
+    "url": "git+https://github.com/Pedrosantosv23/site_gameshop2.git"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/Pedrosantosv23/site_gameshop2/issues"
   },
-  "homepage": "https://github.com/Pedrosantosv23/Gameshop#readme",
+  "homepage": "https://github.com/Pedrosantosv23/site_gameshop2#readme",
   "devDependencies": {
     "live-server": "^1.2.2"
   }
