@@ -32,7 +32,7 @@
         <div id="search-suggestions" class="search-suggestions"></div>
       </div>
       <nav class="quick-actions" aria-label="Atalhos">
-        <button class="quick-link account" aria-label="Minha conta"><span>♙</span><small>Minha conta</small></button>
+        <button class="quick-link account" data-open-account aria-label="Minha conta"><span aria-hidden="true">♙</span><small id="account-label">Entrar</small></button>
         <button class="quick-link" data-open-favorites aria-label="Favoritos"><span>♡<i
               data-fav-count>0</i></span><small>Favoritos</small></button>
         <button class="quick-link" data-open-cart aria-label="Carrinho"><span>▱<i
@@ -404,6 +404,14 @@
       </div><button data-close aria-label="Fechar favoritos">×</button>
     </div>
     <div id="favorites-grid" class="drawer-body product-grid"></div>
+  </aside>
+  <aside id="account-drawer" class="drawer account-drawer" aria-hidden="true" aria-labelledby="account-title">
+    <div class="drawer-head">
+      <div><span class="eyebrow">Área do cliente</span>
+        <h2 id="account-title">Minha conta</h2>
+      </div><button data-close aria-label="Fechar minha conta">×</button>
+    </div>
+    <div id="account-content" class="drawer-body"></div>
   </aside>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="./app.js"></script>

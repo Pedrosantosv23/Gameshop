@@ -24,6 +24,7 @@ const PRODUCTS = [
 const state = {
   cart: JSON.parse(localStorage.getItem("gamesShopCart") || "{}"),
   favorites: JSON.parse(localStorage.getItem("gamesShopFavorites") || "[]"),
+  currentUser: null,
   lastOrder: null,
   filters: { platform: "", genre: "", condition: "", price: "", availability: false, sort: "best" },
 };
@@ -31,6 +32,15 @@ const state = {
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const money = value => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const escapeHTML = value => String(value).replace(/[&<>'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
+const normalizeEmail = value => value.trim().toLocaleLowerCase("pt-BR");
+const getUsers = () => JSON.parse(localStorage.getItem("gamesShopUsers") || "[]");
+const getSessionId = () => localStorage.getItem("gamesShopSession") || sessionStorage.getItem("gamesShopSession");
+const hashPassword = async password => {
+  const data = new TextEncoder().encode(password);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+};
 const whatsappUrl = message => {
   const base = STORE.whatsapp.startsWith("http") ? STORE.whatsapp.replace(/\/$/, "") : `https://wa.me/${STORE.whatsapp}`;
   return `${base}?text=${encodeURIComponent(message)}`;
@@ -111,6 +121,109 @@ function toast(message) {
   el.classList.add("show");
   clearTimeout(window.toastTimer);
   window.toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+}
+
+function restoreSession() {
+  const sessionId = getSessionId();
+  state.currentUser = getUsers().find(user => user.id === sessionId) || null;
+  if (!state.currentUser && sessionId) {
+    localStorage.removeItem("gamesShopSession");
+    sessionStorage.removeItem("gamesShopSession");
+  }
+  updateAccountButton();
+}
+
+function updateAccountButton() {
+  const label = $("#account-label");
+  const icon = $("[data-open-account] > span");
+  if (label) label.textContent = state.currentUser ? state.currentUser.name.split(" ")[0] : "Entrar";
+  if (icon) {
+    const oldBadge = $(".account-badge", icon);
+    if (oldBadge) oldBadge.remove();
+    if (state.currentUser) icon.insertAdjacentHTML("beforeend", '<i class="account-badge" aria-hidden="true"></i>');
+  }
+}
+
+function passwordInput(name, label, autocomplete) {
+  return `<label>${label}<span class="password-field"><input name="${name}" type="password" required minlength="8" autocomplete="${autocomplete}"><button class="password-toggle" type="button" data-toggle-password>Mostrar</button></span></label>`;
+}
+
+function renderAccount(mode = "login") {
+  const target = $("#account-content");
+  if (state.currentUser) {
+    const user = state.currentUser;
+    const orders = JSON.parse(localStorage.getItem("gamesShopOrders") || "[]").filter(order => normalizeEmail(order.customer.email) === user.email);
+    const initials = user.name.split(/\s+/).slice(0, 2).map(part => part[0]).join("").toUpperCase();
+    target.innerHTML = `<div class="profile-card"><div class="profile-avatar">${escapeHTML(initials)}</div><span class="eyebrow">Sessão ativa</span><h3>Olá, ${escapeHTML(user.name.split(" ")[0])}!</h3><p>${escapeHTML(user.email)}</p></div>
+      <div class="account-menu"><div><span>Nome</span><b>${escapeHTML(user.name)}</b></div><div><span>Pedidos neste dispositivo</span><b>${orders.length}</b></div><div><span>Cliente desde</span><b>${new Date(user.createdAt).toLocaleDateString("pt-BR")}</b></div></div>
+      <button type="button" class="btn secondary logout-button" data-logout>Sair da conta</button>
+      <p class="auth-note">Sua conta e seu histórico ficam salvos somente neste navegador.</p>`;
+    return;
+  }
+  const labels = { login: "Entrar", register: "Criar conta", recover: "Recuperar" };
+  let fields = "";
+  if (mode === "register") fields = `<label>Nome completo<input name="name" required minlength="3" autocomplete="name"></label><label>E-mail<input name="email" type="email" required autocomplete="email"></label>${passwordInput("password", "Senha", "new-password")}${passwordInput("confirmPassword", "Confirmar senha", "new-password")}`;
+  else if (mode === "recover") fields = `<label>E-mail cadastrado<input name="email" type="email" required autocomplete="email"></label>${passwordInput("password", "Nova senha", "new-password")}${passwordInput("confirmPassword", "Confirmar nova senha", "new-password")}`;
+  else fields = `<label>E-mail<input name="email" type="email" required autocomplete="email"></label>${passwordInput("password", "Senha", "current-password")}<label class="remember-row"><input name="remember" type="checkbox" checked> Manter minha conta conectada</label>`;
+  target.innerHTML = `<div class="account-intro"><span class="eyebrow">Games Shop</span><h3>${mode === "login" ? "Que bom ter você de volta." : mode === "register" ? "Crie sua conta." : "Defina uma nova senha."}</h3><p>Entre para agilizar seus próximos pedidos.</p></div>
+    <div class="auth-tabs" role="tablist">${Object.entries(labels).map(([key, text]) => `<button type="button" class="auth-tab ${key === mode ? "active" : ""}" data-auth-view="${key}">${text}</button>`).join("")}</div>
+    <form id="auth-form" class="auth-form" data-mode="${mode}"><div class="form-error" role="alert"></div>${fields}<button class="btn primary" type="submit">${labels[mode]}</button></form>
+    <p class="auth-note">Demonstração local: os dados desta conta não são enviados para um servidor.</p>`;
+}
+
+function openAccount(mode = "login") {
+  renderAccount(mode);
+  $("#account-drawer").classList.add("open");
+  $("#account-drawer").setAttribute("aria-hidden", "false");
+  $("#overlay").classList.add("show");
+}
+
+function setAuthError(form, message) {
+  const error = $(".form-error", form);
+  error.textContent = message;
+  error.classList.add("show");
+}
+
+async function submitAuth(form) {
+  if (!form.reportValidity()) return;
+  const data = new FormData(form);
+  const mode = form.dataset.mode;
+  const email = normalizeEmail(data.get("email"));
+  const users = getUsers();
+  const existing = users.find(user => user.email === email);
+  const password = data.get("password");
+  if (mode !== "login" && password !== data.get("confirmPassword")) return setAuthError(form, "As senhas não coincidem.");
+  const passwordHash = await hashPassword(password);
+  if (mode === "register") {
+    const name = data.get("name").trim();
+    if (name.length < 3) return setAuthError(form, "Informe seu nome completo.");
+    if (existing) return setAuthError(form, "Já existe uma conta com este e-mail.");
+    const user = { id: crypto.randomUUID ? crypto.randomUUID() : `user-${Date.now()}`, name, email, passwordHash, createdAt: new Date().toISOString() };
+    users.push(user);
+    localStorage.setItem("gamesShopUsers", JSON.stringify(users));
+    localStorage.setItem("gamesShopSession", user.id);
+    state.currentUser = user;
+    updateAccountButton(); renderAccount(); toast("Conta criada com sucesso.");
+  } else if (mode === "recover") {
+    if (!existing) return setAuthError(form, "Não encontramos uma conta com este e-mail.");
+    existing.passwordHash = passwordHash;
+    localStorage.setItem("gamesShopUsers", JSON.stringify(users));
+    renderAccount("login"); toast("Senha atualizada. Entre com a nova senha.");
+  } else {
+    if (!existing || existing.passwordHash !== passwordHash) return setAuthError(form, "E-mail ou senha incorretos.");
+    localStorage.removeItem("gamesShopSession"); sessionStorage.removeItem("gamesShopSession");
+    (data.get("remember") ? localStorage : sessionStorage).setItem("gamesShopSession", existing.id);
+    state.currentUser = existing;
+    updateAccountButton(); renderAccount(); toast(`Bem-vindo, ${existing.name.split(" ")[0]}!`);
+  }
+}
+
+function prefillCheckout() {
+  if (!state.currentUser) return;
+  const form = $("#checkout-form");
+  if (!form) return;
+  form.elements.name.value = state.currentUser.name;
+  form.elements.email.value = state.currentUser.email;
 }
 
 function addToCart(id) {
@@ -230,7 +343,7 @@ function showHome(anchor) {
 
 function route() {
   const hash = location.hash.slice(1) || "inicio";
-  if (hash === "checkout") { $("#home-view").hidden = true; $("#product-view").hidden = true; $("#checkout-view").hidden = false; renderCheckout(); window.scrollTo({top:0}); }
+  if (hash === "checkout") { $("#home-view").hidden = true; $("#product-view").hidden = true; $("#checkout-view").hidden = false; renderCheckout(); prefillCheckout(); window.scrollTo({top:0}); }
   else if (hash.startsWith("produto/")) showProduct(hash.split("/")[1]); else showHome(hash);
   closePanels();
 }
@@ -251,6 +364,11 @@ document.addEventListener("click", e => {
   const fav = e.target.closest("[data-favorite]"); if (fav) toggleFavorite(Number(fav.dataset.favorite));
   const cart = e.target.closest("[data-open-cart]"); if (cart) openCart();
   if (e.target.closest("[data-open-favorites]")) showFavorites();
+  if (e.target.closest("[data-open-account]")) openAccount();
+  const authView = e.target.closest("[data-auth-view]"); if (authView) renderAccount(authView.dataset.authView);
+  const passwordToggle = e.target.closest("[data-toggle-password]");
+  if (passwordToggle) { const input = passwordToggle.previousElementSibling; input.type = input.type === "password" ? "text" : "password"; passwordToggle.textContent = input.type === "password" ? "Mostrar" : "Ocultar"; }
+  if (e.target.closest("[data-logout]")) { localStorage.removeItem("gamesShopSession"); sessionStorage.removeItem("gamesShopSession"); state.currentUser = null; updateAccountButton(); renderAccount(); toast("Você saiu da conta."); }
   if (e.target.closest("[data-close]") || e.target.id === "overlay") closePanels();
   const qty = e.target.closest("[data-qty]"); if (qty) { const id=Number(qty.dataset.qty); state.cart[id]=Math.max(0,(state.cart[id]||0)+Number(qty.dataset.delta)); if(!state.cart[id]) delete state.cart[id]; save(); updateCounters(); openCart(); }
   const remove = e.target.closest("[data-remove]"); if (remove) { delete state.cart[Number(remove.dataset.remove)]; save(); updateCounters(); openCart(); }
@@ -284,7 +402,10 @@ document.addEventListener("input", e => {
   if (e.target.name === "zip") e.target.value = e.target.value.replace(/\D/g, '').slice(0,8).replace(/(\d{5})(\d)/, '$1-$2');
 });
 
-document.addEventListener("submit", e => { if (e.target.id === "checkout-form") { e.preventDefault(); submitCheckout(e.target); } });
+document.addEventListener("submit", async e => {
+  if (e.target.id === "checkout-form") { e.preventDefault(); submitCheckout(e.target); }
+  if (e.target.id === "auth-form") { e.preventDefault(); await submitAuth(e.target); }
+});
 
 $$('[data-filter]').forEach(el => el.addEventListener('change', () => { state.filters[el.dataset.filter] = el.type === 'checkbox' ? el.checked : el.value; filterProducts(); }));
 $("#clear-filters").addEventListener("click", () => { state.filters={platform:"",genre:"",condition:"",price:"",availability:false,sort:"best"}; $$('[data-filter]').forEach(el => el.type==='checkbox' ? el.checked=false : el.value=el.dataset.filter==='sort'?'best':''); filterProducts(); });
@@ -297,6 +418,7 @@ $("#contact-form").addEventListener("submit", e => {
 });
 window.addEventListener("hashchange", route);
 
+restoreSession();
 renderProducts("#best-sellers", PRODUCTS.filter(p => p.bestSeller).slice(0,8));
 renderProducts("#launches", PRODUCTS.filter(p => p.featured).slice(0,8));
 renderProducts("#preorders", PRODUCTS.filter(p => p.preorder));
